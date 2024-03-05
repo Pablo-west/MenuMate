@@ -64,9 +64,7 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
                               TextSpan(
                                 text: "Mate",
                                 style: TextStyle(
-                                    color: Colors.deepOrangeAccent,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25),
+                                    fontWeight: FontWeight.bold, fontSize: 25),
                               )
                             ])),
                           ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_import
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_import, sort_child_properties_last
 
 import 'dart:ui';
 
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:menu_mate/popular%20dish/popular_dish.dart';
 
+import 'tracker/track_order.dart';
 import 'menu list/menu_list.dart';
 import 'model/app_responsive.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -62,6 +63,35 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
+      floatingActionButton: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: FloatingActionButton(
+            child: Icon(Icons.shopping_cart),
+            tooltip: 'Track order',
+            hoverColor: Colors.orange,
+            elevation: 20,
+            backgroundColor: Colors.orange[900],
+            foregroundColor: Colors.white,
+            onPressed: () {
+              showDialog(
+                // barrierColor: Colors.black87,
+                // barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Container(
+                        width: 850,
+                        margin: EdgeInsets.zero,
+                        padding: EdgeInsets.only(top: 16),
+                        child: OrderTracker()),
+                  );
+                },
+              );
+            }),
+      ),
       body: Theme(
         data: Theme.of(context).copyWith(
           scrollbarTheme: ScrollbarThemeData(

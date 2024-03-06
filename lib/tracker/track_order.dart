@@ -37,7 +37,7 @@ class _OrderTrackerState extends State<OrderTracker> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 300,
+      height: AppResponsive.isBMobile(context) ? 300 : 400,
       child: ListView(
         children: [
           Row(

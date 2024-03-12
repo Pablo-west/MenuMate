@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       stepsWorks(Icon(Icons.qr_code_2_outlined, size: 50),
-                          "Scan QR code or Tap the NFC tag\nto access today's menu"),
+                          "Scan QR code or Tap the NFC tag to access\ntoday's menu"),
                       SizedBox(
                           width: AppResponsive.isTablet(context) ||
                                   AppResponsive.isDesktop(context)

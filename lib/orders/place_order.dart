@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:menu_mate/model/app_responsive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/constant.dart';
 import '../model/theme_helper.dart';
@@ -305,19 +306,23 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        actionButton(() async {
+        actionButton(() {
           Navigator.of(context).pop();
         }, Colors.grey, "Cancel".toUpperCase()),
-        actionButton(() {
+        actionButton(() async {
           String id = DateTime.now().toString();
+          String mealNum = DateTime.now().millisecond.toString();
           // print(id);
           if (formKey.currentState!.validate()) {
             // print(tableNumController.text);
             // print(userNameontroller.text);
             // print(dropdownPaymentOpt);
+            storeOrderId(mealNum);
+
             Map<String, dynamic> orderInfoMap = {
-              "Id": id,
+              "mealNum": mealNum,
               "food": widget.foodName,
+              "foodAmt": "GHS 80.00",
               "tableNum": tableNumController.text,
               "userName": userNameontroller.text,
               "paymentOption": dropdownPaymentOpt
@@ -346,6 +351,7 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       child: TextFormField(
+          textInputAction: TextInputAction.next,
           controller: controller,
           style: TextStyle(fontSize: 13),
           decoration: ThemeHelper().textInputDecoration(
@@ -472,4 +478,10 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
       },
     );
   }
+}
+
+Future<void> storeOrderId(String mealNum) async {
+  final SharedPreferences perf = await SharedPreferences.getInstance();
+
+  perf.setString('userOrderId', mealNum);
 }

@@ -8,7 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:menu_mate/popular%20dish/popular_dish.dart';
+import 'package:menu_mate/staff/staff_dashboard_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'global.dart';
 import 'tracker/track_order.dart';
 import 'menu list/menu_list.dart';
 import 'model/app_responsive.dart';
@@ -58,40 +61,61 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final ScrollController controller = ScrollController();
+  void getOrderId() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    var obtainedOrderId = pref.getString('userOrderId');
+
+    if (obtainedOrderId != null) {
+      setState(() {
+        finalOrderId = obtainedOrderId;
+      });
+      // print(finalOrderId);
+    }
+  }
+
+  @override
+  void initState() {
+    getOrderId();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: FloatingActionButton(
-            child: Icon(Icons.shopping_cart),
-            tooltip: 'Track order',
-            hoverColor: Colors.orange,
-            elevation: 20,
-            backgroundColor: Colors.orange[900],
-            foregroundColor: Colors.white,
-            onPressed: () {
-              showDialog(
-                // barrierColor: Colors.black87,
-                // barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Container(
-                        width: 850,
-                        margin: EdgeInsets.zero,
-                        padding: EdgeInsets.only(top: 16),
-                        child: OrderTracker()),
-                  );
-                },
-              );
-            }),
-      ),
+      //a floating button activated when order is made
+      floatingActionButton: finalOrderId.isNotEmpty
+          ? Padding(
+              padding: EdgeInsets.all(8.0),
+              child: FloatingActionButton(
+                  child: Icon(Icons.shopping_cart),
+                  tooltip: 'Track order',
+                  hoverColor: Colors.orange,
+                  elevation: 20,
+                  backgroundColor: Colors.orange[900],
+                  foregroundColor: Colors.white,
+                  onPressed: () {
+                    showDialog(
+                      // barrierColor: Colors.black87,
+                      // barrierDismissible: false,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Container(
+                              width: 850,
+                              margin: EdgeInsets.zero,
+                              padding: EdgeInsets.only(top: 16),
+                              child: OrderTracker()),
+                        );
+                      },
+                    );
+                  }),
+            )
+          : Container(),
       body: Theme(
         data: Theme.of(context).copyWith(
           scrollbarTheme: ScrollbarThemeData(
@@ -106,8 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
             controller: controller,
             scrollDirection: Axis.vertical,
             children: [
+              //Header banner & logo
               Container(
-                // height: mediaQueryData.size.height / 2.2,
                 width: mediaQueryData.size.width,
                 clipBehavior: Clip.none,
                 child: Card(
@@ -121,6 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(height: 30),
+
+              //About section
               Center(
                 child: Text.rich(TextSpan(children: [
                   TextSpan(
@@ -170,6 +196,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               SizedBox(height: 50),
+
+              //Displaying of popular dishes
               Center(
                 child: Text(
                   "Our Popular Dishes",
@@ -198,7 +226,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 endIndent: 200,
                 thickness: 3,
               ),
-              SizedBox(height: 100),
+              SizedBox(height: 50),
+
+              // Listing menu
               Center(
                 child: Text(
                   "Our Menu List",
@@ -237,9 +267,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(height: 50),
               Divider(thickness: 3, color: Colors.brown),
+
+              //Footer section [ pages nagivation, contact details & location ]
               SizedBox(
-                  // height: 300,
-                  // height: mediaQueryData.size.height,
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -299,7 +329,9 @@ class _MyHomePageState extends State<MyHomePage> {
             child: contactListItem(Icon(Icons.smart_button), "Staff")),
         GestureDetector(
             onTap: () {
-              print("Dashboard");
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const StaffDashboard()),
+              );
             },
             child: contactListItem(Icon(Icons.smart_button), "Dashboard")),
       ],

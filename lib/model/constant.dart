@@ -5,7 +5,7 @@ List<dynamic> paymentOptArray = <String>[
   "G-money",
   "Google Pay",
   "MTN Momo",
-  "Vodafone cash",
+  "Telecel cash",
   // "Altar Servers"
 ];
 

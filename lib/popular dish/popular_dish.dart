@@ -13,21 +13,28 @@ class PopularDish extends StatefulWidget {
 }
 
 class _PopularDishState extends State<PopularDish> {
+  //images of dishes
   final List<String> imagesPaths = [
     'assets/food/meal15.png',
     'assets/banners/banner2.jpg',
     'assets/banners/banner3.png',
     'assets/banners/banner1.jpg',
   ];
+  //names of dishes
   final List<String> imageName = ['Jollof Rice', 'Waakye', 'Fufu', 'Banku'];
+
+  //Amount of each dish
+  final List<String> imagePrice = ['30.00', '25.00', '40.00', '40.00'];
 
   @override
   Widget build(BuildContext context) {
+    //controls the sliding of popular dishes available
     return CarouselSlider.builder(
       itemBuilder: (context, index, realIndex) {
         return PlaceOrderDialog(
           imagePath: imagesPaths[index],
           foodName: imageName[index],
+          imagePrice: imagePrice[index],
         );
       },
       itemCount: imagesPaths.length,
@@ -53,10 +60,12 @@ class _PopularDishState extends State<PopularDish> {
 class PlaceOrderDialog extends StatefulWidget {
   final String imagePath;
   final String foodName;
+  final String imagePrice;
   const PlaceOrderDialog({
     super.key,
     required this.imagePath,
     required this.foodName,
+    required this.imagePrice,
   });
 
   @override
@@ -67,7 +76,7 @@ class _PlaceOrderDialogState extends State<PlaceOrderDialog> {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
-
+    //A pop up to view more details of each dish selected
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -85,6 +94,7 @@ class _PlaceOrderDialogState extends State<PlaceOrderDialog> {
                   child: PlaceOdrer(
                     imagePath: widget.imagePath,
                     foodName: widget.foodName,
+                    imagePrice: widget.imagePrice,
                   )),
             );
           },

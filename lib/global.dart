@@ -1,5 +1,4 @@
-bool cookingProcess = true;
-bool deliveringProcess = true;
-bool receivedProcess = false;
 String trakerStage = "";
-String finalOrderId = "";
+String finalOrderId = "579";
+String? userName;
+bool loggedIn = true;

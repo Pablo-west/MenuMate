@@ -13,9 +13,13 @@ import 'database.dart';
 class PlaceOdrer extends StatefulWidget {
   final String imagePath;
   final String foodName;
+  final String imagePrice;
 
   const PlaceOdrer(
-      {super.key, required this.imagePath, required this.foodName});
+      {super.key,
+      required this.imagePath,
+      required this.foodName,
+      required this.imagePrice});
 
   @override
   State<PlaceOdrer> createState() => _PlaceOdrerState();
@@ -90,6 +94,7 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
                     ],
                   ),
                 ),
+                //format and displays of dish details with
                 SizedBox(
                   child: AppResponsive.isTablet(context) ||
                           AppResponsive.isDesktop(context)
@@ -293,7 +298,7 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
       ),
       TextSpan(
-        text: "80.00",
+        text: widget.imagePrice,
         style: TextStyle(
             color: Colors.blueAccent,
             fontWeight: FontWeight.bold,

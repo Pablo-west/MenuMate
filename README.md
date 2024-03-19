@@ -1,4 +1,4 @@
-# menu_mate
+# MenuMate
 
 Project Name:
 MenuMate App
@@ -16,18 +16,21 @@ Authors:
 
 Angela C. Marfo ([LinkedIn](https://www.linkedin.com/in/daniel-edem-akakpo-aba-19a101121/))
 Daniel Edem Akakpo-Aba ([LinkedIn](https://www.linkedin.com/in/angela-marfo-512b831b3))
+
 Installation:
 To install MenuMate, follow these steps:
 
 Clone the repository: git clone https://github.com/your-username/menumate.git
 Navigate to the project directory: cd menumate
 Install dependencies: npm install
+
 Usage:
 
 Scan the QR code or tap your NFC-enabled device on the MenuMate reader at the restaurant.
 Browse the digital menu and customize your order as desired.
 Add items to your cart and proceed to checkout.
 Enjoy a seamless dining experience with real-time updates on your order status.
+
 Contributing:
 We welcome contributions from the community to improve MenuMate. If you'd like to contribute, please follow these guidelines:
 
@@ -36,12 +39,11 @@ Create a new branch for your feature: git checkout -b feature-name
 Make your changes and commit them: git commit -m 'Add new feature'
 Push to the branch: git push origin feature-name
 Submit a pull request detailing your changes.
-Related Projects:
 
 Licensing:
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-About MenuMate:
+## About MenuMate:
 
 MenuMate was born out of a desire to simplify the dining experience for both customers and restaurant owners. As avid food enthusiasts, we often found ourselves frustrated with traditional paper menus and the cumbersome ordering process, especially during peak dining hours. Inspired to create a solution that seamlessly integrates technology into the dining experience, we embarked on the journey to develop MenuMate.
 
@@ -54,16 +56,3 @@ One of the main technical challenges we encountered was integrating QR code scan
 Solution:
 
 To address these challenges, we utilized Flutter for cross-platform development, Firebase for backend services, and integrated QR code scanning and NFC technology using third-party libraries. We implemented a real-time database for menu management, allowing restaurant owners to update their menus instantly and customers to view the latest offerings in real-time.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

@@ -1,11 +1,18 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMethods {
-  Future addOrder(Map<String, dynamic> orderInfoMap, String id) async {
-    return await FirebaseFirestore.instance
-        .collection("Order")
-        .doc(id)
-        .set(orderInfoMap);
+  Future<void> addOrder(Map<String, dynamic> orderInfoMap, String id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("Order")
+          .doc(id)
+          .set(orderInfoMap);
+    } catch (e) {
+      // Handle error here
+      print("Error adding order: $e");
+    }
   }
 
   Future<Stream<QuerySnapshot>> getOrder() async {

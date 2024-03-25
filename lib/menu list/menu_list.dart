@@ -1,12 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_print
 
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_masonry_view/flutter_masonry_view.dart';
 
+import '../global.dart';
 import '../model/app_responsive.dart';
 import '../model/constant.dart';
+import '../orders/place_order.dart';
 
 class MenuList extends StatefulWidget {
   final dynamic mediaQueryData;
@@ -18,23 +20,63 @@ class MenuList extends StatefulWidget {
 }
 
 class _MenuListState extends State<MenuList> {
-  final _items = [
-    'assets/banners/banner1.jpg',
-    'assets/banners/banner2.jpg',
-    'assets/banners/banner3.png',
-    'assets/food/meal1.jpeg',
-    'assets/food/meal2.jpeg',
-    'assets/food/meal3.jpeg',
-    'assets/food/meal4.jpeg',
-    'assets/food/meal15.png',
-    'assets/food/meal5.jpeg',
-    'assets/food/meal6.jpeg',
-    'assets/food/meal7.jpeg',
-    'assets/food/meal8.jpeg',
-    'assets/food/meal9.jpeg',
-    'assets/food/meal10.jpg',
-    'assets/food/meal11.jpg',
+  // final _items = [
+  //   'assets/food/bankuwithmeat.jpg',
+  //   'assets/food/yam1.jpg',
+  //   'assets/food/fufu.jpg',
+  //   'assets/food/gari.jpg',
+  //   'assets/food/meal13.jpeg',
+  //   'assets/food/meal1.jpeg',
+  //   'assets/food/bankwithfish.jpg',
+  //   'assets/food/meal12.jpeg',
+  //   'assets/food/bankwithfish1.jpg',
+  //   'assets/food/frenchfries.jpg',
+  //   'assets/food/meal7.jpeg',
+  //   'assets/food/meal11.jpg',
+  // ];
+  final List<Map<String, dynamic>> _items = [
+    {
+      'name': 'Banku and Pepper\n[Meat]',
+      'image': 'assets/food/bankuwithmeat.jpg',
+      'price': '30.00'
+    },
+    {'name': 'Yam', 'image': 'assets/food/yam1.jpg', 'price': '15.00'},
+    {'name': 'Fufu ', 'image': 'assets/food/fufu.jpg', 'price': '25.00'},
+    {'name': 'Gari ', 'image': 'assets/food/gari.jpg', 'price': '15.00'},
+    {
+      'name': 'Banku and Okro\n[Meat & Fish]',
+      'image': 'assets/food/meal13.jpeg',
+      'price': '30.00'
+    },
+    {'name': 'Waakye ', 'image': 'assets/food/meal1.jpeg', 'price': '15.00'},
+    {
+      'name': 'Baked Chiken',
+      'image': 'assets/food/meal12.jpeg',
+      'price': '30.00'
+    },
+    {
+      'name': 'Banku and Pepper\n[Tilapia]',
+      'image': 'assets/food/bankwithfish1.jpg',
+      'price': '40.00'
+    },
+    {
+      'name': 'French ',
+      'image': 'assets/food/frenchfries.jpg',
+      'price': '15.00'
+    },
+    {'name': 'French ', 'image': 'assets/food/meal7.jpeg', 'price': '15.00'},
+    {
+      'name': 'Banku and Pepper\n[Red Fish] ',
+      'image': 'assets/food/bankwithfish.jpg',
+      'price': '35.00'
+    },
+    {
+      'name': 'Jollof Rice ',
+      'image': 'assets/food/meal11.jpg',
+      'price': '15.00'
+    }
   ];
+
   final ScrollController controllerOne = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -62,11 +104,6 @@ class _MenuListState extends State<MenuList> {
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
-                    // width: 50,
-                    // width: AppResponsive.isTablet(context) ||
-                    //         AppResponsive.isDesktop(context)
-                    //     ? widget.mediaQueryData.size.width / 5
-                    //     : widget.mediaQueryData.size.width * 5,
                     child: MasonryView(
                         itemPadding: 5,
                         itemRadius: 20,
@@ -77,7 +114,8 @@ class _MenuListState extends State<MenuList> {
                             ? 3
                             : 2,
                         itemBuilder: (item) {
-                          return profileCard(item);
+                          return profileCard(
+                              item['image'], item['name'], item['price']);
                         }),
                   ),
                 ],
@@ -89,7 +127,7 @@ class _MenuListState extends State<MenuList> {
     );
   }
 
-  Widget profileCard(var cardImage) {
+  Widget profileCard(var cardImage, cardName, cardPrice) {
     return Card(
       elevation: 10,
       color: Colors.white12,
@@ -97,8 +135,8 @@ class _MenuListState extends State<MenuList> {
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: MenuViewCard(
-          cardMenu: "cardName",
-          cardDetails: "ownerName",
+          cardPrice: cardPrice,
+          cardName: cardName,
           cardImage: cardImage,
           mediaQueryData: widget.mediaQueryData),
     );
@@ -123,15 +161,15 @@ class _MenuListState extends State<MenuList> {
 }
 
 class MenuViewCard extends StatefulWidget {
-  final String cardMenu;
-  final String cardDetails;
+  final String cardPrice;
+  final String cardName;
   final String cardImage;
   final dynamic mediaQueryData;
 
   const MenuViewCard({
     super.key,
-    required this.cardMenu,
-    required this.cardDetails,
+    required this.cardPrice,
+    required this.cardName,
     required this.cardImage,
     required this.mediaQueryData,
   });
@@ -142,60 +180,90 @@ class MenuViewCard extends StatefulWidget {
 
 class _MenuViewCardState extends State<MenuViewCard> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    // final MediaQueryData mediaQueryData = MediaQuery.of(context);
+    final MediaQueryData mediaQueryData = MediaQuery.of(context);
 
     // var mediaQueryData;
-    return SizedBox(
-      width: widget.mediaQueryData.size.width,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 15, bottom: 15),
-            child: SizedBox(
-              height: 150,
-              width: widget.mediaQueryData.size.width * 2,
+    return GestureDetector(
+      onTap: () {
+        print("object");
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                      image: AssetImage(widget.cardImage), fit: BoxFit.cover),
+                  width: double.infinity,
+                  height: mediaQueryData.size.height / 1.2,
+                  padding: EdgeInsets.only(top: 16),
+                  child: finalOrderId2 == null
+                      ? PlaceOdrer(
+                          imagePath: widget.cardImage,
+                          foodName: widget.cardName,
+                          imagePrice: widget.cardPrice,
+                        )
+                      : Center(
+                          child: Text(
+                          textAlign: TextAlign.center,
+                          "Your orders are pending. Kindly wait to be served\nThank You.",
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
+                        ))),
+            );
+          },
+        );
+      },
+      child: SizedBox(
+        width: widget.mediaQueryData.size.width,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 15, bottom: 15),
+              child: SizedBox(
+                height: 150,
+                width: widget.mediaQueryData.size.width * 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                        image: AssetImage(widget.cardImage), fit: BoxFit.cover),
+                  ),
                 ),
               ),
             ),
-          ),
-          Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.cardDetails,
-                        textAlign: TextAlign.left,
-                        style: MenuListStyle.menuName,
-                      ),
-                      Text(
-                        widget.cardMenu,
-                        textAlign: TextAlign.left,
-                        style: MenuListStyle.menuDetails,
-                      ),
-                    ],
-                  ),
-                ],
-              )),
-          const SizedBox(height: 10),
-          const SizedBox(height: 18),
-        ],
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.cardName,
+                          textAlign: TextAlign.left,
+                          style: MenuListStyle.menuName,
+                        ),
+                        Text(
+                          "GHS ${widget.cardPrice}",
+                          textAlign: TextAlign.left,
+                          style: MenuListStyle.menuDetails,
+                        ),
+                      ],
+                    ),
+                  ],
+                )),
+            const SizedBox(height: 10),
+            const SizedBox(height: 18),
+          ],
+        ),
       ),
     );
   }

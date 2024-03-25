@@ -3,6 +3,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
+import '../global.dart';
 import '../orders/place_order.dart';
 
 class PopularDish extends StatefulWidget {
@@ -15,16 +16,44 @@ class PopularDish extends StatefulWidget {
 class _PopularDishState extends State<PopularDish> {
   //images of dishes
   final List<String> imagesPaths = [
-    'assets/food/meal15.png',
-    'assets/banners/banner2.jpg',
-    'assets/banners/banner3.png',
-    'assets/banners/banner1.jpg',
+    'assets/special/meal15.png',
+    'assets/special/beans.jpg',
+    'assets/special/frenchfriesSp.jpg',
+    'assets/special/jolloriceSpe.jpg',
+    'assets/special/waakyeSpe.jpg',
+    'assets/special/yam.jpg',
+    'assets/special/meal4.jpeg',
+    'assets/special/waakye.jpg',
+    'assets/special/oilriceSpe.jpg',
+    'assets/special/ricenstew.jpg',
   ];
   //names of dishes
-  final List<String> imageName = ['Jollof Rice', 'Waakye', 'Fufu', 'Banku'];
+  final List<String> imageName = [
+    'Jollof Rice - medium',
+    'Gari and Beans',
+    'French with Cat Fish',
+    'Jollof Rice - large',
+    'Waakye - large',
+    'Yam',
+    'Jollof Rice',
+    'Waakye',
+    'Oil Rice',
+    'Rice with stew',
+  ];
 
   //Amount of each dish
-  final List<String> imagePrice = ['30.00', '25.00', '40.00', '40.00'];
+  final List<String> imagePrice = [
+    '40.00',
+    '30.00',
+    '80.00',
+    '70.00',
+    '50.00',
+    '40.00',
+    '35.00',
+    '30.00',
+    '40.00',
+    '50.00',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +68,14 @@ class _PopularDishState extends State<PopularDish> {
       },
       itemCount: imagesPaths.length,
       options: CarouselOptions(
-        height: 250,
+        height: 280,
+        clipBehavior: Clip.none,
         enlargeCenterPage: true,
         enlargeStrategy: CenterPageEnlargeStrategy.height,
         autoPlay: true,
-        aspectRatio: 1 / 9,
+        aspectRatio: 2 / 9,
         enlargeFactor: 0.3,
-        viewportFraction: 0.5,
+        viewportFraction: 0.3,
         // reverse: true,
         autoPlayInterval: Duration(seconds: 3),
         // aspectRatio: 100 / 5,
@@ -91,11 +121,21 @@ class _PlaceOrderDialogState extends State<PlaceOrderDialog> {
                   width: double.infinity,
                   height: mediaQueryData.size.height / 1.2,
                   padding: EdgeInsets.only(top: 16),
-                  child: PlaceOdrer(
-                    imagePath: widget.imagePath,
-                    foodName: widget.foodName,
-                    imagePrice: widget.imagePrice,
-                  )),
+                  child: finalOrderId2 == null
+                      ? PlaceOdrer(
+                          imagePath: widget.imagePath,
+                          foodName: widget.foodName,
+                          imagePrice: widget.imagePrice,
+                        )
+                      : Center(
+                          child: Text(
+                          textAlign: TextAlign.center,
+                          "Your orders are pending. Kindly wait to be served\nThank You.",
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
+                        ))),
             );
           },
         );

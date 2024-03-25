@@ -1,100 +1,162 @@
-// // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// // ignore_for_file: prefer_const_constructors, avoid_print
 
 // import 'package:flutter/material.dart';
-// // import 'package:google_fonts/google_fonts.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:simple_speed_dial/simple_speed_dial.dart';
 
-// void main() {
-//   runApp(const MyApp());
+// import 'global.dart';
+// import 'tracker/track_order.dart';
+
+// class FloatingCart extends StatefulWidget {
+//   const FloatingCart({super.key});
+
+//   @override
+//   State<FloatingCart> createState() => _FloatingCartState();
 // }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
+// class _FloatingCartState extends State<FloatingCart>
+//     with SingleTickerProviderStateMixin {
+//   late AnimationController animationController;
+//   int counter = 0;
+//   void incrementCounter() {
+//     setState(() {
+//       finalOrderId;
+//     });
+//   }
 
-//   // This widget is the root of your application.
+//   void getOrderId() async {
+//     final SharedPreferences pref = await SharedPreferences.getInstance();
+//     obtainedOrderId = pref.getString('userOrderId');
+//     obtainedOrderId1 = pref.getString('userOrderId1');
+//     obtainedOrderId2 = pref.getString('userOrderId2');
+//     obtainedOrderId3 = pref.getString('userOrderId');
+//     obtainedOrderId4 = pref.getString('userOrderId');
+//     obtainedOrderId5 = pref.getString('userOrderId');
+
+//     setState(() {
+//       print(obtainedOrderId.toString());
+//       // print(obtainedOrderId1);
+//       // print(obtainedOrderId2);
+//       // print(obtainedOrderId3);
+//       // print(obtainedOrderId4);
+//       // print(obtainedOrderId5);
+//     });
+
+//     if (obtainedOrderId.toString().isEmpty) {
+//       setState(() {
+//         finalOrderId = obtainedOrderId.toString();
+//         print(finalOrderId);
+//       });
+//     }
+//     if (obtainedOrderId1 != null) {
+//       setState(() {
+//         finalOrderId = obtainedOrderId1;
+//       });
+//     }
+//     if (obtainedOrderId2 != null) {
+//       setState(() {
+//         finalOrderId = obtainedOrderId2;
+//       });
+//     }
+//     if (obtainedOrderId3 != null) {
+//       setState(() {
+//         finalOrderId = obtainedOrderId3;
+//       });
+//     }
+//     if (obtainedOrderId4 != null) {
+//       setState(() {
+//         finalOrderId = obtainedOrderId4;
+//       });
+//     }
+//     if (obtainedOrderId5 != null) {
+//       setState(() {
+//         finalOrderId = obtainedOrderId5;
+//       });
+//     }
+//   }
+
+//   @override
+//   void initState() {
+//     print("floatL $finalOrderId");
+//     getOrderId();
+//     animationController = AnimationController(
+//       vsync: this,
+//       duration: const Duration(milliseconds: 450),
+//     );
+//     super.initState();
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'MenuMate',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         useMaterial3: true,
+//     return GestureDetector(
+//       onTap: () {
+//         if (!animationController.isDismissed) {
+//           animationController.reverse();
+//         }
+//       },
+//       child: SizedBox(
+//         child: Builder(builder: (context) {
+//           return finalOrderId.toString().isNotEmpty
+//               ? SpeedDial(
+//                   controller: animationController,
+//                   openBackgroundColor: Colors.white,
+//                   closedForegroundColor: Colors.white,
+//                   openForegroundColor: Colors.black,
+//                   closedBackgroundColor: Colors.black,
+//                   // labelsBackgroundColor: Colors.amber,
+//                   speedDialChildren: [
+//                     // speedDialFoodList(context, finalOrderId),
+//                     if (finalOrderId.toString().isNotEmpty)
+//                       speedDialFoodList(context, finalOrderId),
+//                     // if (obtainedOrderId1.isNotEmpty)
+//                     //   speedDialFoodList(context, finalOrderId1),
+//                     // if (obtainedOrderId2.isNotEmpty)
+//                     //   speedDialFoodList(context, finalOrderId2),
+//                     // if (obtainedOrderId3.isNotEmpty)
+//                     //   speedDialFoodList(context, finalOrderId3),
+//                     // if (obtainedOrderId4.isNotEmpty)
+//                     //   speedDialFoodList(context, finalOrderId4),
+//                     // if (obtainedOrderId5.isNotEmpty)
+//                     //   speedDialFoodList(context, finalOrderId5),
+//                   ],
+//                   child: Icon(Icons.shopping_cart),
+//                 )
+//               : Container();
+//         }),
 //       ),
-//       home: const MyHomePage(title: 'Flutter Demo Home Page'),
 //     );
 //   }
-// }
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-
-//   final String title;
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     final MediaQueryData mediaQueryData = MediaQuery.of(context);
-//     return Scaffold(
-//       body: SingleChildScrollView(
-//         child: Stack(
-//           children: [
-//             Container(
-//               height: mediaQueryData.size.height / 1.5,
-//               width: mediaQueryData.size.width,
-//               clipBehavior: Clip.none,
-//               child: Card(
-//                 margin: EdgeInsets.zero,
-//                 elevation: 20,
-//                 child: Image.asset(
-//                   'assets/banners/banner3.png',
-//                   // scale: 3,
-//                   fit: BoxFit.cover,
-//                 ),
-//               ),
-//             ),
-//             Container(
-//               color:
-//                   Colors.black.withOpacity(0.6), // Adjust the opacity as needed
-//               width: MediaQuery.of(context).size.width,
-//               height: mediaQueryData.size.height / 1.5,
-//             ),
-//             Center(
-//               child: Column(
-//                 children: [
-//                   SizedBox(height: 150),
-//                   Container(
-//                     margin: EdgeInsets.zero,
-//                     child: Image.asset(
-//                       'assets/logo/logo-icon.png',
-//                       // scale: 3,
-//                       fit: BoxFit.contain,
-//                     ),
-//                   ),
-//                   Container(
-//                       padding: EdgeInsets.only(left: 40),
-//                       child: Text(
-//                         'MenuMate',
-//                         // style: TextStyle(
-//                         //     fontSize: 35,
-//                         //     fontWeight: FontWeight.w900,
-//                         //     color: Colors.black),
-//                         // style: GoogleFonts.gafata(
-//                         //     textStyle: TextStyle(
-//                         //   fontSize: 45,
-//                         //   fontWeight: FontWeight.w900,
-//                         //   color: Colors.white,
-//                         // )),
-//                       )),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
+//   SpeedDialChild speedDialFoodList(BuildContext context, orderId) {
+//     return SpeedDialChild(
+//       child: Icon(Icons.restaurant_menu_outlined),
+//       foregroundColor: Colors.white,
+//       backgroundColor: Colors.red,
+//       label: counter.toString(),
+//       onPressed: () {
+//         animationController.reverse();
+//         incrementCounter();
+//         // showDialog(
+//         //   // barrierColor: Colors.black87,
+//         //   // barrierDismissible: false,
+//         //   context: context,
+//         //   builder: (BuildContext context) {
+//         //     return Dialog(
+//         //       shape: RoundedRectangleBorder(
+//         //         borderRadius: BorderRadius.circular(10.0),
+//         //       ),
+//         //       child: Container(
+//         //           width: 850,
+//         //           margin: EdgeInsets.zero,
+//         //           padding: EdgeInsets.only(top: 16),
+//         //           child: OrderTracker(
+//         //               // finalOrderId: orderId,
+//         //               )),
+//         //     );
+//         //   },
+//         // );
+//       },
+//       // closeSpeedDialOnPressed: false,
 //     );
 //   }
 // }

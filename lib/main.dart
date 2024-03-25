@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_import, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_import, sort_child_properties_last, unnecessary_null_comparison
 
 import 'dart:ui';
 
@@ -10,6 +10,7 @@ import 'package:flutter/widgets.dart';
 import 'package:menu_mate/popular%20dish/popular_dish.dart';
 import 'package:menu_mate/staff/staff_dashboard_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 import 'global.dart';
 import 'tracker/track_order.dart';
@@ -59,257 +60,418 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
   final ScrollController controller = ScrollController();
-  void getOrderId() async {
+
+  Future<void> getOrderId() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    var obtainedOrderId = pref.getString('userOrderId');
+    // pref.clear();
+
+    obtainedOrderId = pref.getString('userOrderId');
+    obtainedOrderId1 = pref.getString('userOrderId1');
+    obtainedOrderId2 = pref.getString('userOrderId2');
+    obtainedOrderId3 = pref.getString('userOrderId3');
+    obtainedOrderId4 = pref.getString('userOrderId4');
+    obtainedOrderId5 = pref.getString('userOrderId5');
 
     if (obtainedOrderId != null) {
       setState(() {
-        finalOrderId = obtainedOrderId;
+        finalOrderId = obtainedOrderId.toString();
+        print("0:$finalOrderId");
       });
-      // print(finalOrderId);
+    }
+    if (obtainedOrderId1 != null) {
+      setState(() {
+        finalOrderId1 = obtainedOrderId1.toString();
+        print("1:$finalOrderId1");
+      });
+    }
+    if (obtainedOrderId2 != null) {
+      setState(() {
+        finalOrderId2 = obtainedOrderId2.toString();
+        print("2: $finalOrderId2");
+      });
+    }
+    if (obtainedOrderId3 != null) {
+      setState(() {
+        finalOrderId3 = obtainedOrderId3.toString();
+        print("3:$finalOrderId3");
+      });
+    }
+    if (obtainedOrderId4 != null) {
+      setState(() {
+        finalOrderId4 = obtainedOrderId4.toString();
+        print("4: $finalOrderId4");
+      });
+    }
+    if (obtainedOrderId5 != null) {
+      setState(() {
+        finalOrderId5 = obtainedOrderId5.toString();
+        print("5: $finalOrderId5");
+      });
     }
   }
 
   @override
   void initState() {
     getOrderId();
-
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 450),
+    );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
-    return Scaffold(
-      //a floating button activated when order is made
-      floatingActionButton: finalOrderId.isNotEmpty
-          ? Padding(
-              padding: EdgeInsets.all(8.0),
-              child: FloatingActionButton(
-                  child: Icon(Icons.shopping_cart),
-                  tooltip: 'Track order',
-                  hoverColor: Colors.orange,
-                  elevation: 20,
-                  backgroundColor: Colors.orange[900],
-                  foregroundColor: Colors.white,
-                  onPressed: () {
-                    showDialog(
-                      // barrierColor: Colors.black87,
-                      // barrierDismissible: false,
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Container(
-                              width: 850,
-                              margin: EdgeInsets.zero,
-                              padding: EdgeInsets.only(top: 16),
-                              child: OrderTracker()),
-                        );
-                      },
-                    );
-                  }),
-            )
-          : Container(),
-      body: Theme(
-        data: Theme.of(context).copyWith(
-          scrollbarTheme: ScrollbarThemeData(
-              thumbColor: MaterialStateProperty.all(Colors.black54),
-              crossAxisMargin: 5),
-        ),
-        child: Scrollbar(
-          controller: controller,
-          thumbVisibility: true,
-          trackVisibility: true,
-          child: ListView(
-            controller: controller,
-            scrollDirection: Axis.vertical,
-            children: [
-              //Header banner & logo
-              Container(
-                width: mediaQueryData.size.width,
-                clipBehavior: Clip.none,
-                child: Card(
-                  margin: EdgeInsets.zero,
-                  elevation: 20,
-                  child: Image.asset(
-                    'assets/banners/banner3.png',
-                    scale: 3,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              SizedBox(height: 30),
-
-              //About section
-              Center(
-                child: Text.rich(TextSpan(children: [
-                  TextSpan(
-                    text: "How it ",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  TextSpan(
-                    text: "Works?",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  )
-                ])),
-              ),
-              SizedBox(height: 20),
-              Container(
-                margin: EdgeInsets.only(
-                    left: AppResponsive.isTablet(context) ||
-                            AppResponsive.isDesktop(context)
-                        ? 30
-                        : 20,
-                    right: AppResponsive.isTablet(context) ||
-                            AppResponsive.isDesktop(context)
-                        ? 30
-                        : 20),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      stepsWorks(Icon(Icons.qr_code_2_outlined, size: 50),
-                          "Scan QR code or Tap the NFC tag to access\ntoday's menu"),
-                      SizedBox(
-                          width: AppResponsive.isTablet(context) ||
-                                  AppResponsive.isDesktop(context)
-                              ? 45
-                              : 15),
-                      stepsWorks(Icon(Icons.menu_book_outlined, size: 50),
-                          "Pick your tasty meal\nand place your order"),
-                      SizedBox(
-                          width: AppResponsive.isTablet(context) ||
-                                  AppResponsive.isDesktop(context)
-                              ? 45
-                              : 5),
-                      stepsWorks(Icon(Icons.spoke_outlined, size: 50),
-                          "Enjoy Our Tasty\nOrganic Food!"),
+    return GestureDetector(
+      onTap: () {
+        if (!animationController.isDismissed) {
+          animationController.reverse();
+        }
+      },
+      child: Scaffold(
+        //a floating button activated when order is made
+        floatingActionButton: Builder(builder: (context) {
+          return obtainedOrderId != null
+              ? Builder(builder: (context) {
+                  return SpeedDial(
+                    controller: animationController,
+                    openBackgroundColor: Colors.white,
+                    child: Icon(Icons.shopping_cart),
+                    closedForegroundColor: Colors.white,
+                    openForegroundColor: Colors.black,
+                    closedBackgroundColor: Colors.black,
+                    // labelsBackgroundColor: Colors.amber,
+                    speedDialChildren: [
+                      // speedDialFoodList(context, finalOrderId),
+                      // if (finalOrderId5 != null)
+                      //   speedDialFoodList(context, finalOrderId5.toString()),
+                      // if (finalOrderId4 != null)
+                      //   speedDialFoodList(context, finalOrderId4.toString()),
+                      // if (finalOrderId3 != null)
+                      //   speedDialFoodList(context, finalOrderId3.toString()),
+                      // if (finalOrderId2 != null)
+                      speedDialFoodList2(context, finalOrderId2.toString()),
+                      // if (finalOrderId1 != null)
+                      speedDialFoodList1(context, finalOrderId1.toString()),
+                      if (finalOrderId != null)
+                        speedDialFoodList(context, finalOrderId.toString()),
                     ],
+                  );
+                })
+              : Container();
+        }),
+        body: Theme(
+          data: Theme.of(context).copyWith(
+            scrollbarTheme: ScrollbarThemeData(
+                thumbColor: MaterialStateProperty.all(Colors.black54),
+                crossAxisMargin: 5),
+          ),
+          child: Scrollbar(
+            controller: controller,
+            thumbVisibility: true,
+            trackVisibility: true,
+            child: ListView(
+              controller: controller,
+              scrollDirection: Axis.vertical,
+              children: [
+                //Header banner & logo
+                Container(
+                  width: mediaQueryData.size.width,
+                  clipBehavior: Clip.none,
+                  child: Card(
+                    margin: EdgeInsets.zero,
+                    elevation: 20,
+                    child: Image.asset(
+                      'assets/banners/banner3.png',
+                      scale: 3,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 50),
+                SizedBox(height: 30),
 
-              //Displaying of popular dishes
-              Center(
-                child: Text(
-                  "Our Popular Dishes",
-                  // style: GoogleFonts.gafata(
-                  //     textStyle: TextStyle(
-                  //   fontStyle: FontStyle.italic,
-                  //   // fontWeight: FontWeight.w900,
-                  //   color: Colors.black,
-                  // )),
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
+                //About section
+                Center(
+                  child: Text.rich(TextSpan(children: [
+                    TextSpan(
+                      text: "How it ",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    TextSpan(
+                      text: "Works?",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    )
+                  ])),
                 ),
-              ),
-              Divider(
-                indent: 200,
-                endIndent: 200,
-                thickness: 3,
-              ),
-              SizedBox(height: 10),
-              PopularDish(),
-              SizedBox(height: 10),
-              Divider(
-                indent: 200,
-                endIndent: 200,
-                thickness: 3,
-              ),
-              SizedBox(height: 50),
-
-              // Listing menu
-              Center(
-                child: Text(
-                  "Our Menu List",
-                  // style: GoogleFonts.gafata(
-                  //     textStyle: TextStyle(
-                  //   fontStyle: FontStyle.italic,
-                  //   // fontWeight: FontWeight.w900,
-                  //   color: Colors.black,
-                  // )),
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
+                SizedBox(height: 20),
+                Container(
+                  margin: EdgeInsets.only(
+                      left: AppResponsive.isTablet(context) ||
+                              AppResponsive.isDesktop(context)
+                          ? 30
+                          : 20,
+                      right: AppResponsive.isTablet(context) ||
+                              AppResponsive.isDesktop(context)
+                          ? 30
+                          : 20),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        stepsWorks(Icon(Icons.qr_code_2_outlined, size: 50),
+                            "Scan QR code or Tap the NFC tag to access\ntoday's menu"),
+                        SizedBox(
+                            width: AppResponsive.isTablet(context) ||
+                                    AppResponsive.isDesktop(context)
+                                ? 45
+                                : 15),
+                        stepsWorks(Icon(Icons.menu_book_outlined, size: 50),
+                            "Pick your tasty meal\nand place your order"),
+                        SizedBox(
+                            width: AppResponsive.isTablet(context) ||
+                                    AppResponsive.isDesktop(context)
+                                ? 45
+                                : 5),
+                        stepsWorks(Icon(Icons.spoke_outlined, size: 50),
+                            "Enjoy Our Tasty\nOrganic Food!"),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              Container(
-                // padding: EdgeInsets.all(10),
-                margin: EdgeInsets.symmetric(
-                    horizontal: AppResponsive.isTablet(context) ||
-                            AppResponsive.isDesktop(context)
-                        ? 200
-                        : 35),
-                height: AppResponsive.isTablet(context) ||
-                        AppResponsive.isDesktop(context) ||
-                        AppResponsive.isBMobile(context)
-                    ? mediaQueryData.size.height
-                    : mediaQueryData.size.height / 1.3,
-                // width: 10,
-                child: Card(
-                    elevation: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 5),
-                      child: MenuList(mediaQueryData: mediaQueryData),
-                    )),
-              ),
-              SizedBox(height: 50),
-              Divider(thickness: 3, color: Colors.brown),
+                SizedBox(height: 50),
 
-              //Footer section [ pages nagivation, contact details & location ]
-              SizedBox(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                      child: AppResponsive.isTablet(context) ||
-                              AppResponsive.isDesktop(context) ||
-                              AppResponsive.isBMobile(context)
-                          ? Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                contactUs(),
-                                openHours(),
-                                quickLinks(),
-                              ],
-                            )
-                          : Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 70, vertical: 20),
-                              child: Column(
+                //Displaying of popular dishes
+                Center(
+                  child: Text(
+                    "Our Popular Dishes",
+                    // style: GoogleFonts.gafata(
+                    //     textStyle: TextStyle(
+                    //   fontStyle: FontStyle.italic,
+                    //   // fontWeight: FontWeight.w900,
+                    //   color: Colors.black,
+                    // )),
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Divider(
+                  indent: 200,
+                  endIndent: 200,
+                  thickness: 3,
+                ),
+                SizedBox(height: 10),
+                PopularDish(),
+                SizedBox(height: 10),
+                Divider(
+                  indent: 200,
+                  endIndent: 200,
+                  thickness: 3,
+                ),
+                SizedBox(height: AppResponsive.isMobile(context) ? 30 : 50),
+
+                // Listing menu
+                Center(
+                  child: Text(
+                    "Our Menu List",
+                    // style: GoogleFonts.gafata(
+                    //     textStyle: TextStyle(
+                    //   fontStyle: FontStyle.italic,
+                    //   // fontWeight: FontWeight.w900,
+                    //   color: Colors.black,
+                    // )),
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  // padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.symmetric(
+                      horizontal: AppResponsive.isTablet(context) ||
+                              AppResponsive.isDesktop(context)
+                          ? 200
+                          : 35),
+                  height: AppResponsive.isTablet(context) ||
+                          AppResponsive.isDesktop(context) ||
+                          AppResponsive.isBMobile(context)
+                      ? mediaQueryData.size.height
+                      : mediaQueryData.size.height / 1.3,
+                  // width: 10,
+                  child: Card(
+                      elevation: 5,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 5),
+                        child: MenuList(mediaQueryData: mediaQueryData),
+                      )),
+                ),
+                SizedBox(height: 50),
+                Divider(thickness: 3, color: Colors.brown),
+
+                //Footer section [ pages nagivation, contact details & location ]
+                SizedBox(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                        child: AppResponsive.isTablet(context) ||
+                                AppResponsive.isDesktop(context) ||
+                                AppResponsive.isBMobile(context)
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   contactUs(),
                                   openHours(),
                                   quickLinks(),
                                 ],
-                              ),
-                            )),
-                  SizedBox(
-                      height: AppResponsive.isTablet(context) ||
-                              AppResponsive.isDesktop(context) ||
-                              AppResponsive.isBMobile(context)
-                          ? 30
-                          : 0)
-                ],
-              )),
-            ],
+                              )
+                            : Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 70, vertical: 20),
+                                child: Column(
+                                  children: [
+                                    contactUs(),
+                                    openHours(),
+                                    quickLinks(),
+                                  ],
+                                ),
+                              )),
+                    SizedBox(
+                        height: AppResponsive.isTablet(context) ||
+                                AppResponsive.isDesktop(context) ||
+                                AppResponsive.isBMobile(context)
+                            ? 30
+                            : 0)
+                  ],
+                )),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  SpeedDialChild speedDialFoodList(BuildContext context, orderId) {
+    return SpeedDialChild(
+      child: Icon(Icons.restaurant_menu_outlined),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.red,
+      label: orderId,
+      onPressed: () {
+        animationController.reverse();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Container(
+                  width: 850,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(top: 16),
+                  child: OrderTracker(
+                    orderId: orderId,
+                  )),
+            );
+          },
+        );
+      },
+      // closeSpeedDialOnPressed: false,
+    );
+  }
+
+  SpeedDialChild speedDialFoodList1(BuildContext context, orderId) {
+    return SpeedDialChild(
+      child: Icon(Icons.restaurant_menu_outlined),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.red,
+      label: finalOrderId1 != null ? orderId : " No Order Listed",
+      onPressed: () {
+        animationController.reverse();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Container(
+                  width: 850,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(top: 16),
+                  child: finalOrderId1 != null
+                      ? OrderTracker(
+                          orderId: orderId,
+                        )
+                      : nullTextStyle()),
+            );
+          },
+        );
+      },
+      // closeSpeedDialOnPressed: false,
+    );
+  }
+
+  SpeedDialChild speedDialFoodList2(BuildContext context, orderId) {
+    return SpeedDialChild(
+      child: Icon(Icons.restaurant_menu_outlined),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.red,
+      label: finalOrderId2 != null ? orderId : " No Order Listed",
+      onPressed: () {
+        animationController.reverse();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Container(
+                  width: 850,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(top: 16),
+                  child: finalOrderId2 != null
+                      ? OrderTracker(
+                          orderId: orderId,
+                        )
+                      : nullTextStyle()),
+            );
+          },
+        );
+      },
+      // closeSpeedDialOnPressed: false,
+    );
+  }
+
+  Center nullTextStyle() {
+    return Center(
+        child: Text("No Order Listed",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontStyle: FontStyle.italic,
+                fontSize: 25,
+                fontWeight: FontWeight.bold)));
   }
 
   Column quickLinks() {

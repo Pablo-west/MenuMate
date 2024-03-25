@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../global.dart';
 import '../model/app_responsive.dart';
 import '../orders/database.dart';
 import 'update.dart';
@@ -15,8 +16,8 @@ class DashboardBody extends StatefulWidget {
 }
 
 class _DashboardBodyState extends State<DashboardBody> {
-  Stream? stockStream;
-  getontheload() async {
+  // Stream? stockStream;
+  Future<void> getontheload() async {
     stockStream = await DatabaseMethods().getOrder();
     setState(() {});
   }

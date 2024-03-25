@@ -1,4 +1,18 @@
+Stream? stockStream;
+
 String trakerStage = "";
-String finalOrderId = "579";
+String? finalOrderId;
+String? finalOrderId1;
+String? finalOrderId2;
+String? finalOrderId3;
+String? finalOrderId4;
+String? finalOrderId5;
 String? userName;
 bool loggedIn = true;
+String? foodTitle;
+dynamic obtainedOrderId;
+dynamic obtainedOrderId1;
+dynamic obtainedOrderId2;
+dynamic obtainedOrderId3;
+dynamic obtainedOrderId4;
+dynamic obtainedOrderId5;

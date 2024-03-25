@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
 
+import '../global.dart';
 import '../model/app_responsive.dart';
 
 class DisplayTrackedOrder extends StatefulWidget {
@@ -201,7 +202,10 @@ class _DisplayTrackedOrderState extends State<DisplayTrackedOrder> {
     String tableNumber = ds["tableNum"].toString();
     String userName = ds["userName"].toString();
     String food = ds["food"].toString();
-
+    setState(() {
+      foodTitle = food;
+      print(foodTitle);
+    });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

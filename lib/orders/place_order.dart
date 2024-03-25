@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:menu_mate/model/app_responsive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../global.dart';
 import '../model/constant.dart';
 import '../model/theme_helper.dart';
 import 'database.dart';
@@ -32,6 +33,24 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
   final TextEditingController userNameontroller = TextEditingController();
   final TextEditingController paymentOptionController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+
+  void incrementCounter(String mealNum) {
+    setState(() {
+      if (obtainedOrderId == null) {
+        finalOrderId = mealNum;
+      } else if (obtainedOrderId1 == null) {
+        finalOrderId1 = mealNum;
+      } else if (obtainedOrderId2 == null) {
+        finalOrderId2 = mealNum;
+      } else if (obtainedOrderId3 == null) {
+        finalOrderId3 = mealNum;
+      } else if (obtainedOrderId4 == null) {
+        finalOrderId4 = mealNum;
+      } else {
+        finalOrderId5 = mealNum;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -317,13 +336,15 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
         actionButton(() async {
           String id = DateTime.now().toString();
           String mealNum = DateTime.now().millisecond.toString();
-          // print(id);
+          print("Id : $id");
+          print("mealNum : $mealNum");
           if (formKey.currentState!.validate()) {
             // print(tableNumController.text);
             // print(userNameontroller.text);
             // print(dropdownPaymentOpt);
-            storeOrderId(mealNum);
 
+            storeOrderId(mealNum);
+            incrementCounter(mealNum);
             Map<String, dynamic> orderInfoMap = {
               "mealNum": mealNum,
               "food": widget.foodName,
@@ -342,6 +363,7 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
                   textColor: Colors.white,
                   fontSize: 15.0);
             });
+
             Navigator.of(context).pop();
           } else {
             unfilledField(context);
@@ -485,8 +507,46 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
   }
 }
 
-Future<void> storeOrderId(String mealNum) async {
+void storeOrderId(String mealNum) async {
   final SharedPreferences perf = await SharedPreferences.getInstance();
 
-  perf.setString('userOrderId', mealNum);
+  if (obtainedOrderId == null) {
+    // finalOrderId = mealNum;
+    obtainedOrderId = perf.setString('userOrderId', mealNum);
+    // print("0a: ${obtainedOrderId.toString()}");
+
+    // print(0);
+  } else if (obtainedOrderId1 == null) {
+    String mealNum1 = mealNum;
+    obtainedOrderId1 = perf.setString('userOrderId1', mealNum1);
+    // print("1b: ${obtainedOrderId1.toString()}");
+
+    // print(1);
+  } else if (obtainedOrderId2 == null) {
+    String mealNum2 = mealNum;
+    obtainedOrderId2 = perf.setString('userOrderId2', mealNum2);
+    // print("2b: ${obtainedOrderId2.toString()}");
+
+    // print(2);
+  } else if (obtainedOrderId3 == null) {
+    String mealNum3 = mealNum;
+
+    obtainedOrderId3 = perf.setString('userOrderId3', mealNum3);
+    // print("3b: ${obtainedOrderId3.toString()}");
+
+    // print(3);
+  } else if (obtainedOrderId4 == null) {
+    String mealNum4 = mealNum;
+
+    obtainedOrderId4 = perf.setString('userOrderId4', mealNum4);
+    // print("4b: ${obtainedOrderId4.toString()}");
+
+    // print(4);
+  } else {
+    String mealNum5 = mealNum;
+
+    // print(5);
+    obtainedOrderId5 = perf.setString('userOrderId5', mealNum5);
+    // print("5b: ${obtainedOrderId5.toString()}");
+  }
 }

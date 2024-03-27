@@ -129,6 +129,7 @@ class _UpdateOrderState extends State<UpdateOrder> {
                           MaterialStateProperty.all<Color>(Color(0xff131e29))),
                   onPressed: () async {
                     Map<String, dynamic> orderInfoMap = {
+                      "timestamp": widget.id,
                       "mealNum": widget.mealNumber,
                       "food": widget.foodName,
                       "foodAmt": "GHS 100.00",

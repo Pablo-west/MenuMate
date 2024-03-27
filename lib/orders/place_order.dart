@@ -49,6 +49,13 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
       } else {
         finalOrderId5 = mealNum;
       }
+      setState(() {
+        finalOrderId;
+        finalOrderId1;
+        finalOrderId2;
+        finalOrderId3;
+        finalOrderId4;
+      });
     });
   }
 
@@ -208,7 +215,8 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
           entryTextField(
               userNameontroller, "Enter your Name", "Eg: Pablo West"),
           SizedBox(height: 10),
-          textDropdown("Title", 30, 150, dropdownPaymentOpt, (String? value) {
+          textDropdown("Payment Mode", 30, 150, dropdownPaymentOpt,
+              (String? value) {
             setState(() {
               dropdownPaymentOpt = value!;
             });
@@ -336,8 +344,8 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
         actionButton(() async {
           String id = DateTime.now().toString();
           String mealNum = DateTime.now().millisecond.toString();
-          print("Id : $id");
-          print("mealNum : $mealNum");
+          // print("Id : $id");
+          // print("mealNum : $mealNum");
           if (formKey.currentState!.validate()) {
             // print(tableNumController.text);
             // print(userNameontroller.text);
@@ -346,9 +354,10 @@ class _PlaceOdrerState extends State<PlaceOdrer> {
             storeOrderId(mealNum);
             incrementCounter(mealNum);
             Map<String, dynamic> orderInfoMap = {
+              "timestamp": id,
               "mealNum": mealNum,
               "food": widget.foodName,
-              "foodAmt": "GHS 80.00",
+              "foodAmt": "GHS ${widget.imagePrice}",
               "tableNum": tableNumController.text,
               "userName": userNameontroller.text,
               "paymentOption": dropdownPaymentOpt

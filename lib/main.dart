@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 
 import 'global.dart';
+import 'model/theme_helper.dart';
 import 'tracker/track_order.dart';
 import 'menu list/menu_list.dart';
 import 'model/app_responsive.dart';
@@ -65,9 +66,15 @@ class _MyHomePageState extends State<MyHomePage>
   late AnimationController animationController;
   final ScrollController controller = ScrollController();
 
+  final loginButton = FocusNode();
+  final TextEditingController setPassword = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool obscurePassword = true;
+  String settingsPin = "1215";
+
   Future<void> getOrderId() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    // pref.clear();
+    pref.clear();
 
     obtainedOrderId = pref.getString('userOrderId');
     obtainedOrderId1 = pref.getString('userOrderId1');
@@ -135,6 +142,13 @@ class _MyHomePageState extends State<MyHomePage>
     final MediaQueryData mediaQueryData = MediaQuery.of(context);
     return GestureDetector(
       onTap: () {
+        setState(() {
+          finalOrderId;
+          finalOrderId1;
+          finalOrderId2;
+          finalOrderId3;
+          finalOrderId4;
+        });
         if (!animationController.isDismissed) {
           animationController.reverse();
         }
@@ -142,34 +156,23 @@ class _MyHomePageState extends State<MyHomePage>
       child: Scaffold(
         //a floating button activated when order is made
         floatingActionButton: Builder(builder: (context) {
-          return obtainedOrderId != null
-              ? Builder(builder: (context) {
-                  return SpeedDial(
-                    controller: animationController,
-                    openBackgroundColor: Colors.white,
-                    child: Icon(Icons.shopping_cart),
-                    closedForegroundColor: Colors.white,
-                    openForegroundColor: Colors.black,
-                    closedBackgroundColor: Colors.black,
-                    // labelsBackgroundColor: Colors.amber,
-                    speedDialChildren: [
-                      // speedDialFoodList(context, finalOrderId),
-                      // if (finalOrderId5 != null)
-                      //   speedDialFoodList(context, finalOrderId5.toString()),
-                      // if (finalOrderId4 != null)
-                      //   speedDialFoodList(context, finalOrderId4.toString()),
-                      // if (finalOrderId3 != null)
-                      //   speedDialFoodList(context, finalOrderId3.toString()),
-                      // if (finalOrderId2 != null)
-                      speedDialFoodList2(context, finalOrderId2.toString()),
-                      // if (finalOrderId1 != null)
-                      speedDialFoodList1(context, finalOrderId1.toString()),
-                      if (finalOrderId != null)
-                        speedDialFoodList(context, finalOrderId.toString()),
-                    ],
-                  );
-                })
-              : Container();
+          return Builder(builder: (context) {
+            return SpeedDial(
+              controller: animationController,
+              openBackgroundColor: Colors.white,
+              child: Icon(Icons.shopping_cart),
+              closedForegroundColor: Colors.white,
+              openForegroundColor: Colors.black,
+              closedBackgroundColor: Colors.black,
+              speedDialChildren: [
+                speedDialFoodList4(context, finalOrderId4.toString()),
+                speedDialFoodList3(context, finalOrderId3.toString()),
+                speedDialFoodList2(context, finalOrderId2.toString()),
+                speedDialFoodList1(context, finalOrderId1.toString()),
+                speedDialFoodList(context, finalOrderId.toString()),
+              ],
+            );
+          });
         }),
         body: Theme(
           data: Theme.of(context).copyWith(
@@ -232,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         stepsWorks(Icon(Icons.qr_code_2_outlined, size: 50),
-                            "Scan QR code or Tap the NFC tag to access\ntoday's menu"),
+                            "Scan QR code or Tap the NFC tag\nto access today's menu"),
                         SizedBox(
                             width: AppResponsive.isTablet(context) ||
                                     AppResponsive.isDesktop(context)
@@ -257,12 +260,6 @@ class _MyHomePageState extends State<MyHomePage>
                 Center(
                   child: Text(
                     "Our Popular Dishes",
-                    // style: GoogleFonts.gafata(
-                    //     textStyle: TextStyle(
-                    //   fontStyle: FontStyle.italic,
-                    //   // fontWeight: FontWeight.w900,
-                    //   color: Colors.black,
-                    // )),
                     style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 25,
@@ -288,12 +285,6 @@ class _MyHomePageState extends State<MyHomePage>
                 Center(
                   child: Text(
                     "Our Menu List",
-                    // style: GoogleFonts.gafata(
-                    //     textStyle: TextStyle(
-                    //   fontStyle: FontStyle.italic,
-                    //   // fontWeight: FontWeight.w900,
-                    //   color: Colors.black,
-                    // )),
                     style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontSize: 25,
@@ -375,8 +366,9 @@ class _MyHomePageState extends State<MyHomePage>
       child: Icon(Icons.restaurant_menu_outlined),
       foregroundColor: Colors.white,
       backgroundColor: Colors.red,
-      label: orderId,
+      label: finalOrderId != null ? orderId : " No Order Listed",
       onPressed: () {
+        updateOrders(orderId);
         animationController.reverse();
         showDialog(
           context: context,
@@ -386,12 +378,14 @@ class _MyHomePageState extends State<MyHomePage>
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Container(
-                  width: 850,
+                  height: finalOrderId == null ? 200 : null,
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.only(top: 16),
-                  child: OrderTracker(
-                    orderId: orderId,
-                  )),
+                  child: finalOrderId != null
+                      ? OrderTracker(
+                          orderId: orderId,
+                        )
+                      : nullTextStyle()),
             );
           },
         );
@@ -407,6 +401,8 @@ class _MyHomePageState extends State<MyHomePage>
       backgroundColor: Colors.red,
       label: finalOrderId1 != null ? orderId : " No Order Listed",
       onPressed: () {
+        updateOrders(orderId);
+        print(orderId);
         animationController.reverse();
         showDialog(
           context: context,
@@ -416,7 +412,7 @@ class _MyHomePageState extends State<MyHomePage>
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Container(
-                  width: 850,
+                  height: finalOrderId1 == null ? 200 : null,
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.only(top: 16),
                   child: finalOrderId1 != null
@@ -439,6 +435,8 @@ class _MyHomePageState extends State<MyHomePage>
       backgroundColor: Colors.red,
       label: finalOrderId2 != null ? orderId : " No Order Listed",
       onPressed: () {
+        updateOrders(orderId);
+
         animationController.reverse();
         showDialog(
           context: context,
@@ -448,10 +446,78 @@ class _MyHomePageState extends State<MyHomePage>
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Container(
-                  width: 850,
+                  height: finalOrderId2 == null ? 200 : null,
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.only(top: 16),
                   child: finalOrderId2 != null
+                      ? OrderTracker(
+                          orderId: orderId,
+                        )
+                      : nullTextStyle()),
+            );
+          },
+        );
+      },
+      // closeSpeedDialOnPressed: false,
+    );
+  }
+
+  SpeedDialChild speedDialFoodList3(BuildContext context, orderId) {
+    return SpeedDialChild(
+      child: Icon(Icons.restaurant_menu_outlined),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.red,
+      label: finalOrderId3 != null ? orderId : " No Order Listed",
+      onPressed: () {
+        updateOrders(orderId);
+
+        animationController.reverse();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Container(
+                  height: finalOrderId3 == null ? 200 : null,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(top: 16),
+                  child: finalOrderId3 != null
+                      ? OrderTracker(
+                          orderId: orderId,
+                        )
+                      : nullTextStyle()),
+            );
+          },
+        );
+      },
+      // closeSpeedDialOnPressed: false,
+    );
+  }
+
+  SpeedDialChild speedDialFoodList4(BuildContext context, orderId) {
+    return SpeedDialChild(
+      child: Icon(Icons.restaurant_menu_outlined),
+      foregroundColor: Colors.white,
+      backgroundColor: Colors.red,
+      label: finalOrderId4 != null ? orderId : " No Order Listed",
+      onPressed: () {
+        updateOrders(orderId);
+
+        animationController.reverse();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Container(
+                  height: finalOrderId4 == null ? 200 : null,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.only(top: 16),
+                  child: finalOrderId4 != null
                       ? OrderTracker(
                           orderId: orderId,
                         )
@@ -474,7 +540,7 @@ class _MyHomePageState extends State<MyHomePage>
                 fontWeight: FontWeight.bold)));
   }
 
-  Column quickLinks() {
+  Widget quickLinks() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -486,21 +552,105 @@ class _MyHomePageState extends State<MyHomePage>
             child: contactListItem(Icon(Icons.smart_button), "Todays Menu")),
         GestureDetector(
             onTap: () {
-              print("Staff");
+              settingPin(context);
             },
             child: contactListItem(Icon(Icons.smart_button), "Staff")),
         GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const StaffDashboard()),
-              );
+              settingPin(context);
             },
             child: contactListItem(Icon(Icons.smart_button), "Dashboard")),
       ],
     );
   }
 
-  Column openHours() {
+  Future<dynamic> settingPin(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Builder(builder: (context) {
+            return AlertDialog(
+              title: Text('Admin Page'),
+              content: SizedBox(
+                width: 200,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                          "You are trying to access a restricted page. Kindly enter the password to gain access to the Admin page",
+                          style: TextStyle(fontSize: 14)),
+                      SizedBox(height: 15),
+                      settingPassword(),
+                    ],
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xff131e29)),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                  ),
+                  child: Text('Access'),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const StaffDashboard()),
+                      );
+                      // Navigator.of().pop();
+                      // if (!AppResponsive.isDesktop(context)) {
+                      //   Navigator.of(context).pop();
+                      // }
+                      setPassword.clear();
+                    }
+                  },
+                ),
+              ],
+            );
+          });
+        });
+  }
+
+  Container settingPassword() {
+    return Container(
+      decoration: ThemeHelper().inputBoxDecorationShaddow(),
+      child: TextFormField(
+          textInputAction: TextInputAction.done,
+          obscureText: obscurePassword,
+          keyboardType: TextInputType.text,
+          controller: setPassword,
+          onFieldSubmitted: (value) {
+            FocusScope.of(context).requestFocus(loginButton);
+          },
+          decoration: ThemeHelper().textInputDecoration(
+            "Password*",
+            "Password*",
+            "",
+            const Icon(Icons.lock_outline),
+          ),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return kPassNullError;
+            } else if (value != settingsPin) {
+              return "Invalid Password";
+            }
+            return null;
+          }),
+    );
+  }
+
+  Widget openHours() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -515,7 +665,7 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
-  Column contactUs() {
+  Widget contactUs() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -529,27 +679,27 @@ class _MyHomePageState extends State<MyHomePage>
     );
   }
 
-  Row contactListItem(icon, text) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        icon,
-        SizedBox(width: 8),
-        footerListedItem(text),
-      ],
-    );
-  }
-
-  Widget footerListedItem(text) {
-    return Column(
-      children: [
-        Text(
-          text,
-          style: TextStyle(fontWeight: FontWeight.w400),
-        ),
-        SizedBox(height: 10)
-      ],
+  Widget contactListItem(Icon icon, String text) {
+    return Container(
+      constraints: BoxConstraints(maxWidth: double.infinity),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          icon,
+          SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: TextStyle(fontWeight: FontWeight.w400),
+              ),
+              SizedBox(height: 10)
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -607,5 +757,16 @@ class _MyHomePageState extends State<MyHomePage>
         ),
       ]),
     );
+  }
+
+  void updateOrders(orderId) {
+    setState(() {
+      finalOrderId;
+      finalOrderId1;
+      finalOrderId2;
+      finalOrderId3;
+      finalOrderId4;
+      orderId;
+    });
   }
 }

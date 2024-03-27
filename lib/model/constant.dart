@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 const String kNullValue = "Please fill out this field";
 List<dynamic> paymentOptArray = <String>[
+  "Cash",
   "G-money",
   "Google Pay",
   "MTN Momo",

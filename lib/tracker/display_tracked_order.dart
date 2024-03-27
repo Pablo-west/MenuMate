@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../global.dart';
 import '../model/app_responsive.dart';
@@ -26,6 +27,29 @@ class _DisplayTrackedOrderState extends State<DisplayTrackedOrder> {
   bool deliveredMode = false;
   String trakerStage = "";
 
+  Future<void> getOrderId() async {
+    await Future.delayed(Duration(seconds: duration));
+
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    if (widget.ds["mealNum"] == finalOrderId) {
+      pref.remove('userOrderId');
+      finalOrderId = null;
+    } else if (widget.ds["mealNum"] == finalOrderId1) {
+      pref.remove('userOrderId1');
+      finalOrderId1 = null;
+    } else if (widget.ds["mealNum"] == finalOrderId2) {
+      pref.remove('userOrderId2');
+      finalOrderId2 = null;
+    } else if (widget.ds["mealNum"] == finalOrderId3) {
+      pref.remove('userOrderId3');
+      finalOrderId3 = null;
+    } else if (widget.ds["mealNum"] == finalOrderId4) {
+      pref.remove('userOrderId4');
+      finalOrderId4 = null;
+    }
+  }
+
   @override
   void initState() {
     if (widget.kitchenMode == "true") {
@@ -41,6 +65,7 @@ class _DisplayTrackedOrderState extends State<DisplayTrackedOrder> {
     //renders the stages of the order to the mealStage string
     if (deliveredMode == true) {
       String mealStage = "Delivered Stage";
+      getOrderId();
       trakerStage = mealStage;
     } else if (kitchenMode == true) {
       String mealStage = "Kitchen Stage";
@@ -204,7 +229,7 @@ class _DisplayTrackedOrderState extends State<DisplayTrackedOrder> {
     String food = ds["food"].toString();
     setState(() {
       foodTitle = food;
-      print(foodTitle);
+      // print(foodTitle);
     });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

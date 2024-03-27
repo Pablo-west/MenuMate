@@ -71,7 +71,13 @@ class _OrderTrackerState extends State<OrderTracker> {
                   ? ListView(
                       children: contentWidgets,
                     )
-                  : Text("You have no order placed");
+                  : Center(
+                      child: Text("You have no order placed",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold)));
           }
         },
         stream: stockStream,
@@ -81,7 +87,7 @@ class _OrderTrackerState extends State<OrderTracker> {
 
   void trackerCard(List<Widget> contentWidgets, BuildContext context,
       DocumentSnapshot<Object?> ds) {
-    final MediaQueryData mediaQueryData = MediaQuery.of(context);
+    // final MediaQueryData mediaQueryData = MediaQuery.of(context);
     String deliveredMode = "false";
     String kitchenMode = "false";
     try {

@@ -41,39 +41,47 @@ class _DashboardBodyState extends State<DashboardBody> {
             return CircularProgressIndicator();
           case ConnectionState.active:
           case ConnectionState.done:
-            return snapshot.hasData
-                ? Container(
-                    margin: const EdgeInsets.all(10.0),
-                    child: AppResponsive.isDesktop(context) ||
-                            AppResponsive.isTablet(context) ||
-                            AppResponsive.isCMobile(context)
-                        ? GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: AppResponsive.isDesktop(context)
-                                  ? 3
-                                  : 2, // Number of columns
-                              mainAxisSpacing: 10.0, // Spacing between rows
-                              crossAxisSpacing: 10.0, // Spacing between columns
-                              childAspectRatio:
-                                  AppResponsive.isDesktop(context) ||
-                                          AppResponsive.isTablet(context)
-                                      ? 2.4
-                                      : 2, // Aspect ratio of grid items
-                            ),
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              DocumentSnapshot ds = snapshot.data.docs[index];
-                              return orderPlacedCard(ds);
-                            },
-                          )
-                        : ListView.builder(
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot ds = snapshot.data.docs[index];
-                              return orderPlacedCard(ds);
-                            }))
-                : Text("no data");
+            if (snapshot.hasData && snapshot.data.docs.isNotEmpty) {
+              return Container(
+                  margin: const EdgeInsets.all(10.0),
+                  child: AppResponsive.isDesktop(context) ||
+                          AppResponsive.isTablet(context) ||
+                          AppResponsive.isCMobile(context)
+                      ? GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: AppResponsive.isDesktop(context)
+                                ? 3
+                                : 2, // Number of columns
+                            mainAxisSpacing: 10.0, // Spacing between rows
+                            crossAxisSpacing: 10.0, // Spacing between columns
+                            childAspectRatio:
+                                AppResponsive.isDesktop(context) ||
+                                        AppResponsive.isTablet(context)
+                                    ? 2.4
+                                    : 2, // Aspect ratio of grid items
+                          ),
+                          itemCount: snapshot.data.docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            DocumentSnapshot ds = snapshot.data.docs[index];
+                            return orderPlacedCard(ds);
+                          },
+                        )
+                      : ListView.builder(
+                          itemCount: snapshot.data.docs.length,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot ds = snapshot.data.docs[index];
+                            return orderPlacedCard(ds);
+                          }));
+            } else {
+              return Center(
+                  child: Text("No Order(s) made...",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold)));
+            }
         }
       },
       stream: stockStream,

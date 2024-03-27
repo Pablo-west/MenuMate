@@ -43,15 +43,15 @@ class _PopularDishState extends State<PopularDish> {
 
   //Amount of each dish
   final List<String> imagePrice = [
-    '40.00',
-    '30.00',
-    '80.00',
+    '100.00',
     '70.00',
-    '50.00',
-    '40.00',
-    '35.00',
-    '30.00',
-    '40.00',
+    '130.00',
+    '70.00',
+    '170.00',
+    '80.00',
+    '85.00',
+    '90.00',
+    '70.00',
     '50.00',
   ];
 
@@ -110,7 +110,7 @@ class _PlaceOrderDialogState extends State<PlaceOrderDialog> {
     return GestureDetector(
       onTap: () {
         showDialog(
-          barrierDismissible: false,
+          barrierDismissible: finalOrderId4 != null ? true : false,
           context: context,
           builder: (BuildContext context) {
             return Dialog(
@@ -119,9 +119,11 @@ class _PlaceOrderDialogState extends State<PlaceOrderDialog> {
               ),
               child: Container(
                   width: double.infinity,
-                  height: mediaQueryData.size.height / 1.2,
+                  height: finalOrderId4 != null
+                      ? 200
+                      : mediaQueryData.size.height / 1.2,
                   padding: EdgeInsets.only(top: 16),
-                  child: finalOrderId2 == null
+                  child: finalOrderId4 == null
                       ? PlaceOdrer(
                           imagePath: widget.imagePath,
                           foodName: widget.foodName,

@@ -16,6 +16,9 @@ class DatabaseMethods {
   }
 
   Future<Stream<QuerySnapshot>> getOrder() async {
-    return FirebaseFirestore.instance.collection("Order").snapshots();
+    return FirebaseFirestore.instance
+        .collection("Order")
+        .orderBy("timestamp", descending: true)
+        .snapshots();
   }
 }

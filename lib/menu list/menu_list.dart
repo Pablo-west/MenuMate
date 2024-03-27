@@ -20,60 +20,50 @@ class MenuList extends StatefulWidget {
 }
 
 class _MenuListState extends State<MenuList> {
-  // final _items = [
-  //   'assets/food/bankuwithmeat.jpg',
-  //   'assets/food/yam1.jpg',
-  //   'assets/food/fufu.jpg',
-  //   'assets/food/gari.jpg',
-  //   'assets/food/meal13.jpeg',
-  //   'assets/food/meal1.jpeg',
-  //   'assets/food/bankwithfish.jpg',
-  //   'assets/food/meal12.jpeg',
-  //   'assets/food/bankwithfish1.jpg',
-  //   'assets/food/frenchfries.jpg',
-  //   'assets/food/meal7.jpeg',
-  //   'assets/food/meal11.jpg',
-  // ];
   final List<Map<String, dynamic>> _items = [
     {
       'name': 'Banku and Pepper\n[Meat]',
       'image': 'assets/food/bankuwithmeat.jpg',
-      'price': '30.00'
+      'price': '70.00'
     },
-    {'name': 'Yam', 'image': 'assets/food/yam1.jpg', 'price': '15.00'},
-    {'name': 'Fufu ', 'image': 'assets/food/fufu.jpg', 'price': '25.00'},
-    {'name': 'Gari ', 'image': 'assets/food/gari.jpg', 'price': '15.00'},
+    {'name': 'Yam', 'image': 'assets/food/yam1.jpg', 'price': '50.00'},
+    {'name': 'Fufu ', 'image': 'assets/food/fufu.jpg', 'price': '60.00'},
+    {'name': 'Gari ', 'image': 'assets/food/gari.jpg', 'price': '55.00'},
     {
       'name': 'Banku and Okro\n[Meat & Fish]',
       'image': 'assets/food/meal13.jpeg',
-      'price': '30.00'
+      'price': '50.00'
     },
-    {'name': 'Waakye ', 'image': 'assets/food/meal1.jpeg', 'price': '15.00'},
+    {'name': 'Waakye ', 'image': 'assets/food/meal1.jpeg', 'price': '40.00'},
     {
       'name': 'Baked Chiken',
       'image': 'assets/food/meal12.jpeg',
-      'price': '30.00'
+      'price': '60.00'
     },
     {
       'name': 'Banku and Pepper\n[Tilapia]',
       'image': 'assets/food/bankwithfish1.jpg',
-      'price': '40.00'
+      'price': '50.00'
     },
     {
-      'name': 'French ',
+      'name': 'French with Chiken',
       'image': 'assets/food/frenchfries.jpg',
+      'price': '70.00'
+    },
+    {
+      'name': 'French with vegs',
+      'image': 'assets/food/meal7.jpeg',
       'price': '15.00'
     },
-    {'name': 'French ', 'image': 'assets/food/meal7.jpeg', 'price': '15.00'},
     {
       'name': 'Banku and Pepper\n[Red Fish] ',
       'image': 'assets/food/bankwithfish.jpg',
-      'price': '35.00'
+      'price': '90.00'
     },
     {
       'name': 'Jollof Rice ',
       'image': 'assets/food/meal11.jpg',
-      'price': '15.00'
+      'price': '100.00'
     }
   ];
 
@@ -186,9 +176,8 @@ class _MenuViewCardState extends State<MenuViewCard> {
     // var mediaQueryData;
     return GestureDetector(
       onTap: () {
-        print("object");
         showDialog(
-          barrierDismissible: false,
+          barrierDismissible: finalOrderId4 != null ? true : false,
           context: context,
           builder: (BuildContext context) {
             return Dialog(
@@ -197,9 +186,11 @@ class _MenuViewCardState extends State<MenuViewCard> {
               ),
               child: Container(
                   width: double.infinity,
-                  height: mediaQueryData.size.height / 1.2,
+                  height: finalOrderId4 != null
+                      ? 200
+                      : mediaQueryData.size.height / 1.2,
                   padding: EdgeInsets.only(top: 16),
-                  child: finalOrderId2 == null
+                  child: finalOrderId4 == null
                       ? PlaceOdrer(
                           imagePath: widget.cardImage,
                           foodName: widget.cardName,
@@ -239,11 +230,12 @@ class _MenuViewCardState extends State<MenuViewCard> {
               ),
             ),
             Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -258,8 +250,10 @@ class _MenuViewCardState extends State<MenuViewCard> {
                         ),
                       ],
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 10),
             const SizedBox(height: 18),
           ],
@@ -267,23 +261,4 @@ class _MenuViewCardState extends State<MenuViewCard> {
       ),
     );
   }
-
-  // Future<dynamic> networkError(context) {
-  //   return showDialog(
-  //     // barrierDismissible: false,
-  //     context: context,
-  //     builder: (context) {
-  //       return const AlertDialog(
-  //         icon: Center(
-  //           child: FaIcon(FontAwesomeIcons.triangleExclamation,
-  //               size: 50, color: Colors.redAccent),
-  //         ),
-  //         content: Text(
-  //           "You encountered some network challenges.",
-  //           textAlign: TextAlign.center,
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
 }

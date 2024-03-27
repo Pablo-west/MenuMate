@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 Stream? stockStream;
 
 String trakerStage = "";
@@ -16,3 +18,6 @@ dynamic obtainedOrderId2;
 dynamic obtainedOrderId3;
 dynamic obtainedOrderId4;
 dynamic obtainedOrderId5;
+
+int duration = 5;
+const String kPassNullError = "Enter your password";

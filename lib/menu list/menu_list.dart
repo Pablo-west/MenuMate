@@ -32,18 +32,18 @@ class _MenuListState extends State<MenuList> {
     {
       'name': 'Banku and Okro\n[Meat & Fish]',
       'image': 'assets/food/meal13.jpeg',
-      'price': '50.00'
+      'price': '85.00'
     },
     {'name': 'Waakye ', 'image': 'assets/food/meal1.jpeg', 'price': '40.00'},
     {
       'name': 'Baked Chiken',
       'image': 'assets/food/meal12.jpeg',
-      'price': '60.00'
+      'price': '160.00'
     },
     {
       'name': 'Banku and Pepper\n[Tilapia]',
       'image': 'assets/food/bankwithfish1.jpg',
-      'price': '50.00'
+      'price': '80.00'
     },
     {
       'name': 'French with Chiken',
@@ -53,7 +53,7 @@ class _MenuListState extends State<MenuList> {
     {
       'name': 'French with vegs',
       'image': 'assets/food/meal7.jpeg',
-      'price': '15.00'
+      'price': '50.00'
     },
     {
       'name': 'Banku and Pepper\n[Red Fish] ',
